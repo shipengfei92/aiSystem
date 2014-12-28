@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>五子棋系统展示</title>
+  <meta name="description" content="">
+  <meta name="author" content="Pengfei Shi">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="stylesheet" href="./frameworks/revealjs/css/reveal.min.css">
+  <link rel="stylesheet" href="./frameworks/revealjs/css/theme/default.css" id="theme">
+  <link rel="stylesheet" href="./highlighters/highlight.js/css/zenburn.css" id="theme">
+  <!--[if lt IE 9]>
+  <script src="lib/js/html5shiv.js"></script>
+  <![endif]-->  <link rel="stylesheet" href = "assets/css/ribbons.css">
+
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section class='' data-state='' id='slide-1'>
+  <h2>《智能系统设计》</h2>
+  <h3> 五子棋系统展示<h3>
+  <br><br/>
+   <h5> Presented by：<h5>
+  <h4>5110309611  陈秋文<h4>
+  <h4>5110309400  朱煜程<h4>
+  <h4>5110309604  时鹏飞<h4>
+
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+  <aside class='notes'>
+    <p>Some notes on the first slide</p>
+
+  </aside>
+</section>
+<section class='' data-state='' id='slide-2'>
+  <h2>OUTLINE</h2>
+  <ul>
+<li>1、系统概述</li>
+<li>2、FPGA部分</li>
+<li>3、CPU部分</li>
+<li>4、CPU与FPGA连接—PCIE接口
+</li>
+<li>5、功能演示
+</li>
+
+</ul>
+
+</section>
+
+<section>
+
+<section class='' data-state=''>
+    <h2>1、系统概述</h2>
+    <ul></ul>
+
+</section>
+
+<section class='' data-state=''>
+    <h2>系统框架</h2>
+    <ul></ul>
+<img src="./pic/1-1.png" >
+</section>
+
+<section class='' data-state=''>
+    <h2>应用软件</h2>
+	<ul></ul>
+	<li>Quotus II 2012 破解版</li>
+	<li>Qsys</li>
+	<li>Visual Studio 2012 旗舰版</li>
+    <ul></ul>
+
+</section>
+   
+ 
+ <section class='' data-state=''>
+    <h2>黑子位置计算部分</h2>
+	<ul></ul>
+<div align="left">1、判断是否黑子立即赢或者白子下一个子赢，选黑子立即赢的位置或者堵住白子立即赢得位置</div>
+<ul></ul>
+<div align="left">2、对黑子每个当前可下位置进行综合评分，对白子每个下一步可下位置进行综合评分。</div>
+<ul></ul>
+<div align="left">3、比较黑子和白子的最高得分，确定攻守策略。</div>
+
+</section>
+
+<section class='' data-state=''>
+    <h2>评分策略</h2>
+    <ul></ul>
+<h2><img src="./pic/1-2.png" width="80%" ></h2>
+<div align="left">注：x代表未落子位置，o代表本方棋子位置，@代表当前评分位置</div>
+</section>
+
+<section class='' data-state=''>
+    <h2>权衡策略</h2>
+    <ul></ul>
+<h2><img src="./pic/1-3.png" width="80%" ></h2>
+
+</section>
+
+<section class='' data-state=''>
+    <h2>VGA时序</h2>
+    <ul></ul>
+<img src="./pic/1-4.png" width="60%" >
+<img src="./pic/1-5.png" width="70%" >
+</section>
+
+<section class='' data-state=''>
+    <h2>使用VGA</h2>
+    <ul></ul>
+<h2><img src="./pic/1-6.png" width="80%" ></h2>
+<div align="left">注：altera的板子使用了VGA、DAC</div>
+</section>
+
+ <section class='' data-state=''>
+    <h2>棋子的存储</h2>
+	<ul></ul>
+<div align="left">棋盘是15*15的规格，所以一共有225个位置。
+我们将白子和黑子的位置信息分开存储，利用位宽为225的寄存器来进行存储。
+</div>
+<ul></ul>
+<div align="left">Reg [224:0]  black;
+
+</div>
+<div align="left">Reg [224:0]  white;</div>
+<ul></ul>
+<div align="left">例如当5行6列处放置一枚白子时，那么</div>
+<div align="left">Poi=4*15+6-1=65，white[poi]=1</div>
+</section>
+
+ <section class='' data-state=''>
+    <h2>棋盘和棋子的显示</h2>
+	<ul></ul>
+<div align="left">1、VGA是逐行从左往右逐点扫描，在想要显示棋盘的地方输出相应的BGR信息就可以显示棋盘。
+</div>
+<ul></ul>
+<div align="left">2、因为棋子显示权最高(棋子的显示要覆盖棋盘和背景)，相应的在if-else if-else语句中是有优先权关系，所以棋子应该写在condition1的位置。
+</div>
+<ul></ul>
+<div align="left">If (poi1) condition1;                      </div>
+<div align="left">Else if (poi1) condition2;              </div>
+<div align="left">Else condition3;                             </div>
+<div align="left">在poi1处执行的是condition1而不是condition2</div>
+<ul></ul>
+
+</section>
+
+ <section class='' data-state=''>
+    <h2>棋盘和棋子的显示</h2>
+<div align="left">例如判断在1行1列处是否有棋子
+</div>
+
+<ul></ul>              
+<h5><pre>if((CN1>=98) && (CN1<=102) && (CN2>=63) && (CN2<=67)) begin    
+	if(white[0]) begin
+		b_data <= 11111111;
+		g_data <= 11111111;
+		r_data <= 11111111;
+	end
+	else if(black[0]) begin
+		b_data <= 00000000;
+		g_data <= 00000000;
+		r_data <= 00000000;
+	end
+End</pre></h5>
+
+
+<font size="6"  ><div align="left"><li>注：CN1是屏幕上的列数(98~102/640)，CN2是屏幕上的行数(63~67/480)。CN1=100，CN2=65屏幕上的这个位置，是棋盘上的1行1列的位置。
+           </li></div></font>
+<ul></ul>
+
+</section>
+
+</section>
+
+
+
+<section class='' data-state='' id='slide-9'>
+  <h2>5、功能演示</h2>
+  <ul>
+</ul>
+</section>
+
+<section class='' data-state=''>
+    <h2>thank you</h2>
+
+</section>
+
+
+    </div>
+  </div>
+</body>
+  <script src="./frameworks/revealjs/lib/js/head.min.js"></script>
+  <script src="./frameworks/revealjs/js/reveal.min.js"></script>
+  <script>
+  // Full list of configuration options available here:
+  // https://github.com/hakimel/reveal.js#configuration
+  Reveal.initialize({
+    controls: true,
+    progress: true,
+    history: true,
+    center: true,
+    theme: Reveal.getQueryHash().theme || 'default', 
+    transition: Reveal.getQueryHash().transition || 'default', 
+    dependencies: [
+    // Cross-browser shim that fully implements classList -
+    // https://github.com/eligrey/classList.js/
+      { src: './frameworks/revealjs/lib/js/classList.js', condition: function() { return !document.body.classList;}},
+      // Zoom in and out with Alt+click
+      { src: './frameworks/revealjs/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+      // Speaker notes
+      { src: './frameworks/revealjs/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+      // Remote control your reveal.js presentation using a touch device
+      //{ src: './frameworks/revealjs/plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+      ]
+  });
+  </script>  <!-- LOAD HIGHLIGHTER JS FILES -->
+<script src="./highlighters/highlight.js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<!-- DONE LOADING HIGHLIGHTER JS FILES -->
+ 
+
+</html>
