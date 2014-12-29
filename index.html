@@ -39,8 +39,8 @@
   <h2>OUTLINE</h2>
   <ul>
 <li>1、系统概述</li>
-<li>2、CPU部分</li>
-<li>3、FPGA部分</li>
+<li>2、FPGA部分</li>
+<li>3、CPU部分</li>
 <li>4、CPU与FPGA连接—PCIE接口
 </li>
 <li>5、功能演示
@@ -81,43 +81,10 @@
 
 </section>
 
-<section>
-<section class='' data-state='' id=''>
-  <h2>2、CPU部分</h2>
-  <ul>
-</ul>
-</section>
-
-<section class='' data-state=''>
-    <h2>黑子位置计算部分</h2>
-	<ul></ul>
-<div align="left">1、判断是否黑子立即赢或者白子下一个子赢，选黑子立即赢的位置或者堵住白子立即赢得位置</div>
-<ul></ul>
-<div align="left">2、对黑子每个当前可下位置进行综合评分，对白子每个下一步可下位置进行综合评分。</div>
-<ul></ul>
-<div align="left">3、比较黑子和白子的最高得分，确定攻守策略。</div>
-
-</section>
-
-<section class='' data-state=''>
-    <h2>评分策略</h2>
-    <ul></ul>
-<h2><img src="./pic/1-2.png" width="80%" ></h2>
-<div align="left">注：x代表未落子位置，o代表本方棋子位置，@代表当前评分位置</div>
-</section>
-
-<section class='' data-state=''>
-    <h2>权衡策略</h2>
-    <ul></ul>
-<h2><img src="./pic/1-3.png" width="80%" ></h2>
-
-</section>
-
-</section>
 
 <section>
 <section class='' data-state='' id=''>
-  <h2>3、FPGA部分</h2>
+  <h2>2、FPGA部分</h2>
   <ul>
 </ul>
 </section>
@@ -196,6 +163,39 @@ End</pre></h5>
 
 </section>
 
+<section>
+<section class='' data-state='' id=''>
+  <h2>3、CPU部分</h2>
+  <ul>
+</ul>
+</section>
+
+<section class='' data-state=''>
+    <h2>黑子位置计算部分</h2>
+	<ul></ul>
+<div align="left">1、判断是否黑子立即赢或者白子下一个子赢，选黑子立即赢的位置或者堵住白子立即赢得位置</div>
+<ul></ul>
+<div align="left">2、对黑子每个当前可下位置进行综合评分，对白子每个下一步可下位置进行综合评分。</div>
+<ul></ul>
+<div align="left">3、比较黑子和白子的最高得分，确定攻守策略。</div>
+
+</section>
+
+<section class='' data-state=''>
+    <h2>评分策略</h2>
+    <ul></ul>
+<h2><img src="./pic/1-2.png" width="80%" ></h2>
+<div align="left">注：x代表未落子位置，o代表本方棋子位置，@代表当前评分位置</div>
+</section>
+
+<section class='' data-state=''>
+    <h2>权衡策略</h2>
+    <ul></ul>
+<h2><img src="./pic/1-3.png" width="80%" ></h2>
+
+</section>
+
+</section>
 
 <section>
 <section class='' data-state='' id=''>
